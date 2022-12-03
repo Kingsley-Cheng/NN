@@ -1,0 +1,2 @@
+# NN
+ learning of NN
