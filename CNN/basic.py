@@ -7,6 +7,8 @@ from torch import nn
 import torchvision
 from torchvision import transforms
 from tqdm import tqdm
+import pickle
+
 
 # help function
 def load_FashionMNIST_datasets(BatchSize, Resize, root):
@@ -27,6 +29,27 @@ def load_FashionMNIST_datasets(BatchSize, Resize, root):
     testloader = data.DataLoader(testsets, batch_size=BatchSize, shuffle=False, num_workers=2)
 
     labels = np.array(['t-shirt', 'trouser', 'pullover', 'dress', 'coat','sandal', 'shirt', 'sneaker', 'bag', 'ankle boot'])
+    return tranloader, testloader, labels
+
+def load_CIFAR10_datasets(BatchSize, Resize, root):
+    """
+    help function to load FashionMNIST datasets
+    """
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Resize(Resize),
+        transforms.Normalize(0.5,0.5,0.5),])
+
+    # trainsets
+    trainsets = torchvision.datasets.CIFAR10(root=root,train=True,transform=transform,download=True)
+    tranloader = data.DataLoader(trainsets,batch_size=BatchSize, shuffle=True, num_workers=2)
+
+    # testsets
+    testsets = torchvision.datasets.CIFAR10(root=root, train=False, transform=transform, download=True)
+    testloader = data.DataLoader(testsets, batch_size=BatchSize, shuffle=False, num_workers=2)
+
+    f = open("./data/cifar-10-batches-py/batches.meta","rb",)
+    labels = pickle.load(f,encoding='latin1')["label_names"]
     return tranloader, testloader, labels
 
 
