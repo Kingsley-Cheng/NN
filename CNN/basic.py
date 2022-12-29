@@ -50,7 +50,7 @@ def load_CIFAR10_datasets(BatchSize, Resize, root):
 
     f = open("./data/cifar-10-batches-py/batches.meta","rb",)
     labels = pickle.load(f,encoding='latin1')["label_names"]
-    return tranloader, testloader, labels
+    return tranloader, testloader, np.array(labels)
 
 
 def imshow(imgs):
